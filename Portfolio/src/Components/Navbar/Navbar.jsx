@@ -11,7 +11,7 @@ function Navbar() {
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
-    };
+  };
 
     window.addEventListener("scroll", handleScroll);
     return() => window.removeEventListener("scroll", handleScroll);
@@ -21,7 +21,13 @@ function Navbar() {
   const handleMenuItemClick = (sectionId) => {
     setActiveSection(sectionId);
     setIsOpen(false);
-  }
+
+    // Scroll smoothly to the section
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
 
   const menuItems = [
     {id: "about", label: "About"},
@@ -32,9 +38,11 @@ function Navbar() {
   ]
 
   return (
-    <nav className={`fixed top-0 w-full z-50 transition duration-300 px-[7vw] md:px-[7vw] lg:px-[20vw] ${
-      isScrolled ? "bg-[#050414] bg-opacity-50 backdrop-blur-md shadow-md" : "bg-transparent"
-    }`}>
+    <nav
+    className={`fixed top-0 w-full z-50 transition duration-300 px-[7vw] md:px-[7vw] lg:px-[20vw] ${
+    isScrolled ? "bg-[#050414]/70 backdrop-blur-md shadow-md" : "bg-transparent"
+    }`}
+    >
       <div className='text-white py-5 flex justify-between items-center'>
 
         {/* Logo */}
@@ -46,7 +54,7 @@ function Navbar() {
           <span className='text-[#8245ec]'>&gt;</span>
         </div>
 
-        <ul className=' hidden md:flex space-x-8 text-gray-300'>
+        <ul className='hidden md:flex space-x-8 text-gray-300'>
           {menuItems.map((item) => (
             <li key={item.id}>
               <button
